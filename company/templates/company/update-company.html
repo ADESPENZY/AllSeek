@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block main %}
+<div class="flex justify-center items-center mt-10">
+    <div class="md:w-[60%] px-10 py-10 mx-auto rounded bg-gray-800">
+        
+        <h1 class="text-white text-2xl font-bold text-center mb-10">Update Company Details</h1>
+
+        {% if form.errors %}
+        <div class="text-red-500 mb-4">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field|capfirst }}: {{ errors|join:', ' }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+        
+            <!-- Company Name -->
+            <div>
+                <label for="id_name" class="block text-white font-semibold mb-1">Company Name</label>
+                {{ form.name|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <!-- Company Logo -->
+            <div>
+                <label for="id_image" class="block text-white font-semibold mb-1">Company Logo</label>
+                {{ form.image|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+        
+            <!-- Founded Date -->
+            <div>
+                <label for="id_founded_date" class="block text-white font-semibold mb-1">Founded Date</label>
+                {{ form.founded_date|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <!-- Country -->
+            <div>
+                <label for="id_country" class="block text-white font-semibold mb-1">Country</label>
+                {{ form.country|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <!-- Industry -->
+            <div>
+                <label for="id_industry" class="block text-white font-semibold mb-1">Industry</label>
+                {{ form.industry|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+        
+            <!-- Address -->
+            <div>
+                <label for="id_address" class="block text-white font-semibold mb-1">Address</label>
+                {{ form.address|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <!-- Company Size -->
+            <div>
+                <label for="id_size" class="block text-white font-semibold mb-1">Company Size</label>
+                {{ form.size|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+        
+            <!-- Recruitment Policy -->
+            <div>
+                <label for="id_recruitment_policy" class="block text-white font-semibold mb-1">Recruitment Policy</label>
+                {{ form.recruitment_policy|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+        
+            <!-- Verification and Recruitment Options -->
+            <div>
+                <label for="id_is_verified" class="block text-white font-semibold mb-1">Is Verified</label>
+                {{ form.is_verified }}
+            </div>
+            <div>
+                <label for="id_can_recruit" class="block text-white font-semibold mb-1">Can Recruit</label>
+                {{ form.can_recruit }}
+            </div>
+        
+            <!-- Website URL -->
+            <div>
+                <label for="id_website_url" class="block text-white font-semibold mb-1">Website URL</label>
+                {{ form.website_url|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <!-- Social Media Links -->
+            <div>
+                <label for="id_facebook_link" class="block text-white font-semibold mb-1">Facebook Link</label>
+                {{ form.facebook_link|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+            <div>
+                <label for="id_twitter_link" class="block text-white font-semibold mb-1">Twitter Link</label>
+                {{ form.twitter_link|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+            <div>
+                <label for="id_linkedin_link" class="block text-white font-semibold mb-1">LinkedIn Link</label>
+                {{ form.linkedin_link|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+            <div>
+                <label for="id_instagram_link" class="block text-white font-semibold mb-1">Instagram Link</label>
+                {{ form.instagram_link|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <!-- Company's Information -->
+            <div>
+                <label for="id_about" class="block text-white font-semibold mb-1">About Company</label>
+                {{ form.about|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <div>
+                <label for="id_mission" class="block text-white font-semibold mb-1">Company's Mission</label>
+                {{ form.mission|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+
+            <div>
+                <label for="id_vision" class="block text-white font-semibold mb-1">Company's Vision</label>
+                {{ form.vision|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="mt-8">
+                <button type="submit" class="w-full py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">Update Company</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="flex justify-center items-center min-h-screen p-4 bg-gray-900">
+    <div class="w-full md:w-4/5 lg:w-2/3 bg-gray-800 p-6 rounded shadow-lg">
+        <h1 class="text-3xl font-bold text-center text-white mb-8">Applicant Details</h1>
+
+        <div class="space-y-6 text-gray-300">
+            <!-- Profile Picture -->
+            <div class="flex flex-col items-center">
+                <p class="font-semibold">Profile Picture:</p>
+                {% if resume.image %}
+                    <img src="{{ resume.image.url }}" alt="Profile Picture" class="w-32 h-32 rounded-full mb-4">
+                {% else %}
+                    <p class="italic text-gray-400">No profile picture uploaded.</p>
+                {% endif %}
+            </div>
+
+            <!-- Personal Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <p><strong>Name:</strong> {{ resume.firstname }} {{ resume.lastname }}</p>
+                <p><strong>Gender:</strong> {{ resume.get_gender_display|default:"Not provided" }}</p>
+                <p><strong>Date of Birth:</strong> {{ resume.dob|default:"Not provided" }}</p>
+                <p><strong>Nationality:</strong> {{ resume.nationality|default:"Not provided" }}</p>
+                <p><strong>Religion:</strong> {{ resume.religion|default:"Not provided" }}</p>
+                <p><strong>Address:</strong> {{ resume.address|default:"Not provided" }}</p>
+                <p><strong>Phone:</strong> {{ resume.phone|default:"Not provided" }}</p>
+                <p><strong>Email:</strong> {{ resume.email|default:"Not provided" }}</p>
+            </div>
+
+            <!-- Education and Experience -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <p><strong>School:</strong> {{ resume.school|default:"Not provided" }}</p>
+                <p><strong>Qualification:</strong> {{ resume.qualification|default:"Not provided" }}</p>
+                <p><strong>Year of Graduation:</strong> {{ resume.year_of_graduation|default:"Not provided" }}</p>
+                <p><strong>Experience:</strong> {{ resume.experience|default:"Not provided" }}</p>
+                <p><strong>Skills:</strong> {{ resume.skills|default:"Not provided" }}</p>
+                <p><strong>References:</strong> {{ resume.reference|default:"Not provided" }}</p>
+            </div>
+
+            <!-- Uploaded Resume -->
+            <p><strong>Uploaded Resume:</strong>
+                {% if resume.file %}
+                    <a href="{{ resume.file.url }}" class="text-blue-500 hover:underline">Download</a>
+                {% else %}
+                    <span class="italic text-gray-400">No file uploaded.</span>
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mt-8 space-y-4 sm:space-y-0">
+            <a href="{% url 'dashboard' %}" class="w-full sm:w-auto px-6 py-3 text-center bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all">
+                Back to Dashboard
+            </a>
+            <a href="{% url 'update_resume' %}" class="w-full sm:w-auto px-6 py-3 text-center bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all">
+                Edit Resume
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

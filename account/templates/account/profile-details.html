@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile Details{% endblock %}
+
+{% block main %}
+<section class="min-h-screen bg-gray-50 py-10 px-4">
+    <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3">
+            <!-- Profile Picture and Summary Section -->
+            <div class="bg-primary p-8 flex flex-col items-center">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-32 h-32 rounded-full border-4 border-white shadow-lg mb-4">
+                {% else %}
+                    <div class="w-32 h-32 rounded-full bg-gray-200 flex justify-center items-center text-gray-700 text-xl font-semibold mb-4">
+                        No Image
+                    </div>
+                {% endif %}
+                <h1 class="text-2xl text-white font-bold">{{ profile.user.username }}</h1>
+                <p class="text-white">{{ profile.user.email }}</p>
+                <div class="mt-6">
+                    <a href="{% url 'update_profile' %}" class="bg-white text-black font-semibold py-2 px-4 rounded-lg ">
+                        Edit Profile
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile Details Section -->
+            <div class="col-span-2 p-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Profile Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-gray-600 font-medium">First Name</p>
+                        <p class="text-gray-800">{{ profile.firstname }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Last Name</p>
+                        <p class="text-gray-800">{{ profile.lastname }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Bio</p>
+                        <p class="text-gray-800">{{ profile.bio }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Phone Number</p>
+                        <p class="text-gray-800">{{ profile.phone_number }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Address</p>
+                        <p class="text-gray-800">{{ profile.address }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">City</p>
+                        <p class="text-gray-800">{{ profile.city }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Country</p>
+                        <p class="text-gray-800">{{ profile.country }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Section -->
+        <div class="bg-gray-100 p-6 text-center">
+            <a href="{% url 'dashboard' %}" class="bg-primary text-white py-2 px-6 rounded-lg font-medium">
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

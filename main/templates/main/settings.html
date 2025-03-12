@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block main %}
+{% load static %}
+
+<section>
+    <div class="p-10 bg-gray-100 min-h-screen">
+        <h1 class="text-3xl font-bold mb-6">Settings</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- User Profile Settings -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">User Profile</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'profile_details' %}" class="text-blue-500 hover:underline">Profile Details</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'update_profile' %}" class="text-blue-500 hover:underline">Edit Profile</a>
+                    </li>
+                    <li>
+                        <a href="" class="text-blue-500 hover:underline">Change Password</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'delete-account' %}" class="text-red-500 hover:underline">Delete Account</a>
+                    </li>
+                </ul>
+            </div>
+            
+            {% if request.user.is_recruiter %}
+            <!-- Company Settings -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Company Settings</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'company_list' %}" class="text-blue-500 hover:underline">Manage Companies</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'create_company' %}" class="text-blue-500 hover:underline">Add New Company</a>
+                    </li>
+                </ul>
+            </div>
+
+            {% elif request.user.is_applicant %} 
+            <!-- Resume Settings -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Resume Settings</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'update_resume' %}" class="text-blue-500 hover:underline">Update Resume</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'applicant_details' %}" class="text-blue-500 hover:underline">View Resume</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'delete-resume' %}" class="text-red-500 underline ">Delete Resume</a>                  
+                    </li>
+                   
+                    <li>
+                        <a href="{% url 'create_resume' %}" class="text-blue-500 hover:underline">Add New Company</a>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+                
+            
+
+            <!-- Notifications Settings -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Notifications</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="" class="text-blue-500 hover:underline">Notification Preferences</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

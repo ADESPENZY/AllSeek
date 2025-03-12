@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Applications for {{ job.title }}{% endblock %}
+
+{% block main %}
+<h1 class="text-2xl font-bold mb-4">Applications for {{ job.title }}</h1>
+
+{% if applications %}
+    <table class="min-w-full border-collapse">
+        <thead>
+            <tr>
+                <th class="border-b py-2 text-left">Applicant</th>
+                <th class="border-b py-2 text-left">Cover Letter</th>
+                <th class="border-b py-2 text-left">Resume</th>
+                <th class="border-b py-2 text-left">Applied On</th>
+                <th class="border-b py-2 text-left">Status</th>
+                <th class="border-b py-2 text-left">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr>
+                <td class="border-b py-2">{{ app.user.username }}</td>
+                <td class="border-b py-2">
+                    <p>{{ app.cover_letter }}</p>
+                </td>
+                <td class="border-b py-2">
+                    {% if app.resume %}
+                        <a href="{{ app.resume.url }}" download class="text-blue-600 hover:underline">Download Resume</a>
+                    {% else %}
+                        <span class="text-gray-600">No Resume</span>
+                    {% endif %}
+                </td>
+                <td class="border-b py-2">{{ app.applied_on|date:"M d, Y" }}</td>
+                <td class="border-b py-2">
+                    <span class="{% if app.status == 'APPROVED' %}text-green-600{% elif app.status == 'REJECTED' %}text-red-600{% else %}text-yellow-600{% endif %} font-bold">{{ app.status }}</span>
+                </td>
+                <td class="border-b py-2">
+                    <form method="post" action="{% url 'view-applications' job_id=job.id %}" class="inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="application_id" value="{{ app.id }}">
+                        <select name="status" class="border rounded py-1 px-4">
+                            <option value="PENDING" {% if app.status == 'PENDING' %}selected{% endif %}>Pending</option>
+                            <option value="APPROVED" {% if app.status == 'APPROVED' %}selected{% endif %}>Approve</option>
+                            <option value="REJECTED" {% if app.status == 'REJECTED' %}selected{% endif %}>Reject</option>
+                        </select>
+                        <button type="submit" class="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">Update</button>
+                    </form>
+                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No applications found for this job.</p>
+{% endif %}
+{% endblock %}

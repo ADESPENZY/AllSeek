@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Post CV Page{% endblock  %}
+
+
+{% block main %}
+<section class="flex justify-center items-center mt-5 ">
+    <div class="p-5 border-primary border-2 text-center rounded-md shadow-inner">
+        <span class="text-xl font-semibold">Add A Resume to AllSeek</span>
+        <div class="my-4">
+            <a href="{% url 'create_resume' %}" class="bg-primary hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-md">Create Resume/Upload Resume</a>
+        </div>
+        <span class="text-sm">By continuing, you agree to receive job opportunities from AllSeek</span>
+    </div>
+</section>
+    
+{% endblock %}
+    
+    

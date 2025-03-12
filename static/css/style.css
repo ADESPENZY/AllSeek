@@ -1,0 +1,22 @@
+
+/* Show scrollbar styles */
+.scrollbar-visible::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.scrollbar-visible::-webkit-scrollbar-thumb {
+    background: #888; /* Thumb color */
+    border-radius: 4px; /* Rounded edges */
+}
+.scrollbar-visible::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Hover color */
+}
+
+/* Hide scrollbar styles */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Webkit-based browsers */
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* Hides scrollbar in IE and Edge */
+    scrollbar-width: none;     /* Hides scrollbar in Firefox */
+}

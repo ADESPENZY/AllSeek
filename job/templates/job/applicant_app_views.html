@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Your Applied Job Page{% endblock %}
+
+{% block main %}
+<div class="container mx-auto py-8 px-4">
+    <h2 class="text-2xl font-bold text-center text-teal-600 mb-6">Your Job Applications</h2>
+    
+    <div class="overflow-x-auto">
+        <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-teal-600 text-white">
+                <tr>
+                    <th class="text-left py-3 px-4">Job Title</th>
+                    <th class="text-left py-3 px-4">Application Date</th>
+                    <th class="text-left py-3 px-4">Status</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for application in applications %}
+                <tr class="hover:bg-gray-100">
+                    <td class="py-3 px-4">
+                        <a href="{% url 'job_detail' pk=application.job.id %}" class="text-blue-600 underline hover:text-blue-800">
+                            {{ application.job.title }}
+                        </a>
+                    </td>
+                    <td class="py-3 px-4">{{ application.applied_on|date:"F j, Y" }}</td>
+                    <td class="py-3 px-4">
+                        <span class="
+                            {% if application.status == 'PENDING' %}
+                                bg-yellow-100 text-yellow-800
+                            {% elif application.status == 'APPROVED' %}
+                                bg-green-100 text-green-800
+                            {% elif application.status == 'REJECTED' %}
+                                bg-red-100 text-red-800
+                            {% endif %}
+                            text-sm font-medium px-2 py-1 rounded
+                        ">
+                            {{ application.get_status_display }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center py-4 text-gray-600">
+                        You haven't applied for any jobs yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

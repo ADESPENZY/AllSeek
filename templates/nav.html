@@ -1,0 +1,102 @@
+{% load static %}
+
+<nav class="border-t-2 border-b-2 border-secondary p-4 font-sans mt-1">
+    <div class="md:w-[90%] mx-auto flex items-center justify-between">
+        <!-- Brand Logo -->
+        <div class="flex gap-10 items-center border-x-2 border-secondary px-2">
+            <a href="#" class="text-primary text-lg font-bold">BrandLogo</a>
+
+            <!-- Menu Links for Desktop & Hidden on Mobile -->
+            <div class="hidden md:flex space-x-6 items-center"> <!-- Increased space for desktop -->
+                <a href="{% url 'home-page' %}" class="text-primary hover:text-secondary">Home</a>
+                <a href="" class="text-primary hover:text-secondary">Company Reviews</a>
+            </div>
+        </div>
+
+        <div class="flex gap-10 items-center">
+            <!-- First div with icons -->
+            <div class="hidden md:flex gap-6 pr-6 border-r-2 border-secondary"> <!-- Space for icons -->
+                <a href="">
+                    <i class="fas fa-envelope text-primary text-2xl"></i> <!-- Font Awesome message icon -->
+                </a>
+                <a href="{% url 'notifications:list' %}">
+                    <i class="fas fa-bell text-primary text-2xl"></i>
+                    {% if unread_notifications_count > 0 %}
+                        <span class="badge bg-red-500 text-white">{{ unread_notifications_count }}</span>
+                    {% endif %}
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">
+                    <i class="fas fa-user text-primary text-2xl"></i> <!-- Font Awesome user icon -->
+                </a>
+                {% else %}
+                <a href="{% url 'login-page' %}">
+                    <i class="fas fa-user text-primary text-2xl"></i> <!-- Font Awesome user icon -->
+                </a>
+                {% endif %}
+            </div>
+                
+            <!-- Second div with text -->
+            <div class="hidden md:block pr-6 border-r-2 border-secondary">
+                <a href="{% url 'banner-page' %}">
+                    <span class="text-primary">Employee/Employer</span>
+                </a>
+            </div>
+            
+
+            <!-- Authentication login/logout -->
+            <div class="hidden md:block">
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout-page' %}" class="text-primary hover:text-secondary">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{% url 'login-page' %}" class="text-primary hover:text-secondary">
+                    Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Hamburger button for mobile view -->
+        <button class="md:hidden text-primary text-2xl" id="nav-toggle">
+            <i class="fas fa-bars"></i> <!-- Font Awesome hamburger icon -->
+        </button>
+    </div>
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div id="nav-menu" class="hidden md:hidden flex-col items-center space-y-4 mt-4 border-t-2 border-secondary">
+        <a href="{% url 'home-page' %}" class="text-primary hover:text-secondary">Home</a>
+        <a href="" class="text-primary hover:text-secondary">Company Reviews</a>
+        <a href="{% url 'notifications:list' %}" class="text-primary hover:text-secondary">
+            Notifications
+        </a>
+        <a href="{% url 'banner-page' %}" class="text-primary hover:text-secondary">Employee/Employer</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="text-primary hover:text-secondary">
+            Dashboard
+        </a>
+        <a href="{% url 'logout-page' %}" class="text-primary hover:text-secondary">Logout</a>
+        {% else %}
+        <a href="{% url 'login-page' %}" class="text-primary hover:text-secondary">Login</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- Add this script for hamburger menu functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            if (navMenu.classList.contains('hidden')) {
+                navMenu.classList.remove('hidden');
+                navMenu.classList.add('flex');
+            } else {
+                navMenu.classList.remove('flex');
+                navMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>

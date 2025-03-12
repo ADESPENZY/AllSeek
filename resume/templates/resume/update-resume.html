@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="flex justify-center items-center mt-10">
+    <div class="md:w-[60%] px-10 py-10 mx-auto rounded bg-gray-800">
+        <h1 class="text-white text-2xl font-bold text-center mb-10">Update Your Resume</h1>
+
+        {% if form.errors %}
+        <div class="text-red-500 mb-4">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field|capfirst }}: {{ errors|join:', ' }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Profile Picture -->
+            <div>
+                <label for="id_image" class="block text-white font-semibold mb-1">Profile Picture</label>
+                <input type="file" id="id_image" name="image" class="w-full p-2 rounded border border-gray-400 text-gray-900">
+                {% if form.image.errors %}
+                    <div class="text-red-500 text-sm">{{ form.image.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- First Name -->
+            <div>
+                <label for="id_firstname" class="block text-white font-semibold mb-1">First Name</label>
+                <input type="text" id="id_firstname" name="firstname" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.firstname.value|default:'' }}" placeholder="First Name">
+                {% if form.firstname.errors %}
+                    <div class="text-red-500 text-sm">{{ form.firstname.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Last Name -->
+            <div>
+                <label for="id_lastname" class="block text-white font-semibold mb-1">Last Name</label>
+                <input type="text" id="id_lastname" name="lastname" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.lastname.value|default:'' }}" placeholder="Last Name">
+                {% if form.lastname.errors %}
+                    <div class="text-red-500 text-sm">{{ form.lastname.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Gender -->
+            <div>
+                <label for="id_gender" class="block text-white font-semibold mb-1">Gender</label>
+                <select id="id_gender" name="gender" class="w-full p-2 rounded border border-gray-400 text-gray-900">
+                    <option value="">Select Gender</option>
+                    <option value="M" {% if form.gender.value == 'M' %}selected{% endif %}>Male</option>
+                    <option value="F" {% if form.gender.value == 'F' %}selected{% endif %}>Female</option>
+                </select>
+                {% if form.gender.errors %}
+                    <div class="text-red-500 text-sm">{{ form.gender.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Date of Birth -->
+            <div>
+                <label for="id_dob" class="block text-white font-semibold mb-1">Date of Birth</label>
+                <input type="date" id="id_dob" name="dob" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.dob.value|default:'' }}">
+                {% if form.dob.errors %}
+                    <div class="text-red-500 text-sm">{{ form.dob.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Nationality -->
+            <div>
+                <label for="id_nationality" class="block text-white font-semibold mb-1">Nationality</label>
+                <input type="text" id="id_nationality" name="nationality" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.nationality.value|default:'' }}" placeholder="Nationality">
+                {% if form.nationality.errors %}
+                    <div class="text-red-500 text-sm">{{ form.nationality.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Religion -->
+            <div>
+                <label for="id_religion" class="block text-white font-semibold mb-1">Religion</label>
+                <input type="text" id="id_religion" name="religion" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.religion.value|default:'' }}" placeholder="Religion">
+                {% if form.religion.errors %}
+                    <div class="text-red-500 text-sm">{{ form.religion.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Address -->
+            <div>
+                <label for="id_address" class="block text-white font-semibold mb-1">Address</label>
+                <textarea id="id_address" name="address" class="w-full p-2 rounded border border-gray-400 text-gray-900" rows="3"
+                placeholder="Address">{{ form.address.value|default:'' }}</textarea>
+                {% if form.address.errors %}
+                    <div class="text-red-500 text-sm">{{ form.address.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Phone Number -->
+            <div>
+                <label for="id_phone_number" class="block text-white font-semibold mb-1">Phone Number</label>
+                <input type="text" id="id_phone_number" name="phone_number" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                    value="{{ form.phone_number.value|default:'' }}" placeholder="Phone Number"
+                    pattern="\+?[0-9]{10,15}" required title="Enter a valid phone number (10-15 digits)">
+                {% if form.phone_number.errors %}
+                    <div class="text-red-500 text-sm">{{ form.phone_number.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="id_email" class="block text-white font-semibold mb-1">Email</label>
+                <input type="email" id="id_email" name="email" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.email.value|default:'' }}" placeholder="Email">
+            </div>
+
+            <!-- Job Title -->
+            <div>
+                <label for="id_job_title" class="block text-white font-semibold mb-1">Job Title</label>
+                <input type="text" id="id_job_title" name="job_title" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.job_title.value|default:'' }}" placeholder="Job Title">
+            </div>
+
+            <!-- Education Details -->
+            <div>
+                <label for="id_school" class="block text-white font-semibold mb-1">School</label>
+                <input type="text" id="id_school" name="school" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.school.value|default:'' }}" placeholder="School Name">
+            </div>
+            <div>
+                <label for="id_qualification" class="block text-white font-semibold mb-1">Qualification</label>
+                <input type="text" id="id_qualification" name="qualification" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.qualification.value|default:'' }}" placeholder="Qualification">
+            </div>
+            <div>
+                <label for="id_year_of_graduation" class="block text-white font-semibold mb-1">Year of Graduation</label>
+                <input type="number" id="id_year_of_graduation" name="year_of_graduation" class="w-full p-2 rounded border border-gray-400 text-gray-900"
+                value="{{ form.year_of_graduation.value|default:'' }}">
+            </div>
+
+            <!-- Experience -->
+            <div>
+                <label for="id_experience" class="block text-white font-semibold mb-1">Experience</label>
+                <textarea id="id_experience" name="experience" class="w-full p-2 rounded border border-gray-400 text-gray-900" rows="4"
+                placeholder="Work Experience">{{ form.experience.value|default:'' }}</textarea>
+            </div>
+
+            <!-- Skills -->
+            <div>
+                <label for="id_skills" class="block text-white font-semibold mb-1">Skills</label>
+                <textarea id="id_skills" name="skills" class="w-full p-2 rounded border border-gray-400 text-gray-900" rows="4"
+                placeholder="Skills">{{ form.skills.value|default:'' }}</textarea>
+            </div>
+
+            <!-- References -->
+            <div>
+                <label for="id_reference" class="block text-white font-semibold mb-1">References</label>
+                <textarea id="id_reference" name="reference" class="w-full p-2 rounded border border-gray-400 text-gray-900" rows="4"
+                placeholder="References">{{ form.reference.value|default:'' }}</textarea>
+            </div>
+            <!-- Repeat similar error and value handling for other fields -->
+
+            <!-- Submit Button -->
+            <div class="mt-8">
+                <button type="submit" class="w-full py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">Update Resume</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

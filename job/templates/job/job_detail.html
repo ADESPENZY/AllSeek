@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Apply Job Page{% endblock %}
+
+{% block main %}
+<div class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8">
+    <!-- Job Title and Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-primary">{{ job.title }}</h1>
+        
+        {% if user.is_authenticated and user == job.company.user %}
+        <div class="space-x-3">
+            <a href="{% url 'update_job' job.pk %}" 
+               class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200">
+                Edit
+            </a>
+            <a href="" 
+               class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200"
+               onclick="return confirm('Are you sure you want to delete this job?');">
+                Delete
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <p class="text-lg text-gray-600 mb-6">Join our team and make a difference!</p>
+
+    <!-- Company Information Section -->
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-700">Company Information</h2>
+        <p class="mt-2 text-gray-500"><span class="font-semibold">Company:</span> {{ job.company.name }}</p>
+        <p class="mt-2 text-gray-500"><span class="font-semibold">About Company:</span> {{ job.company.about }}</p>
+        <p class="mt-1 text-gray-500"><span class="font-semibold">Location:</span> {{ job.location }}</p>
+        <p class="mt-1 text-gray-500"><span class="font-semibold">Salary:</span> ₦ {{ job.salary_min }} - ₦ {{ job.salary_max }} a month</p>
+        <p class="mt-1 text-gray-500"><span class="font-semibold">Posted On:</span> {{ job.create_date|date:"M d, Y" }}</p>
+    </div>
+
+    <!-- Requirements Section -->
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-700">Requirements</h2>
+        {% if requirements %}
+            <ul class="text-sm list-disc list-inside ml-3">
+                {% for req in requirements %}
+                    <li class="mt-1 text-gray-500">{{ req }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-500 italic">No requirements provided.</p>
+        {% endif %}
+    </div>
+
+    <!-- Responsibilities Section -->
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-700">Responsibilities</h2>
+        {% if responsibilities %}
+            <ul class="text-sm list-disc list-inside ml-3">
+                {% for res in responsibilities %}
+                    <li class="mt-1 text-gray-500">{{ res }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-500 italic">No responsibilities provided.</p>
+        {% endif %}
+    </div>
+
+    <!-- Apply Button -->
+    <div class="mt-8 text-center">
+        <a href="{% url 'apply_job' job.id %}" 
+           class="bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow-md transition duration-200">
+            Apply Now
+        </a>
+    </div>
+</div>
+{% endblock %}

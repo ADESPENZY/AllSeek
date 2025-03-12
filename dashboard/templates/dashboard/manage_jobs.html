@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Apply Job Page{% endblock  %}
+
+{% block main %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Dashboard Header -->
+    <div class="text-3xl font-bold text-gray-800 mb-6">Manage Jobs</div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Card: View All Jobs -->
+        <div class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition duration-200 ease-in-out">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-briefcase text-4xl text-primary mr-4"></i>
+                <h3 class="text-xl font-semibold">View All Jobs</h3>
+            </div>
+            <p class="text-gray-500 mb-4">View a list of all active job listings. Filter and sort them as needed.</p>
+            <a href="{% url 'view-jobs' %}" class="text-primary font-semibold hover:text-blue-600">Go to All Jobs</a>
+        </div>
+
+        <!-- Card: Add New Job -->
+        <div class="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition duration-200 ease-in-out">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-plus text-4xl text-primary mr-4"></i>
+                <h3 class="text-xl font-semibold">Add New Job</h3>
+            </div>
+            <p class="text-gray-500 mb-4">Create a new job listing with detailed information.</p>
+            <a href="{% url 'create_job' %}" class="text-primary font-semibold hover:text-blue-600">Add New Job</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+    

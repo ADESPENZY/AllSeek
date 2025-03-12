@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block main %}
+<div class="flex justify-center items-center mt-10">
+    <div class="w-[60%] px-10 py-10 mx-auto rounded bg-gray-800">
+        
+        <h1 class="text-white text-2xl font-bold text-center mb-10">Update Job</h1>
+
+        {% if form.errors %}
+        <div class="text-red-500 mb-4">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field|capfirst }}: {{ errors|join:', ' }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+                <div>
+                    <label for="id_title" class="block text-white font-semibold mb-1">Job Title :</label>
+                    {{ form.title|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_location" class="block text-white font-semibold mb-1">Location :</label>
+                    {{ form.location|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_company" class="block text-white font-semibold mb-1">Company :</label>
+                    {{ form.company|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_job_type" class="block text-white font-semibold mb-1">Job Type :</label>
+                    {{ form.job_type|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_salary_min" class="block text-white font-semibold mb-1">Minimum Salary :</label>
+                    {{ form.salary_min|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_salary_max" class="block text-white font-semibold mb-1">Maximum Salary :</label>
+                    {{ form.salary_max|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_requirement" class="block text-white font-semibold mb-1">Requirements :</label>
+                    {{ form.requirement|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_skills" class="block text-white font-semibold mb-1">Skills :</label>
+                    {{ form.skills|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <div>
+                    <label for="id_responsibility" class="block text-white font-semibold mb-1">Responsibilities :</label>
+                    {{ form.responsibility|add_class:"w-full p-2 rounded border border-gray-400 text-gray-900" }}
+                </div>
+
+                <!-- Is Available -->
+                <div>
+                    <label for="id_is_available" class="block text-white font-semibold mb-1">Is Available:</label>
+                    {{ form.is_available|add_class:"form-check-input" }}
+                </div>
+
+                <div class="mt-8">
+                    <button type="submit" class="w-full py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">Update Job</button>
+                </div>
+            </div>    
+        </form>
+    </div>
+</div>
+{% endblock %}

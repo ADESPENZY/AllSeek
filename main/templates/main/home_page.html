@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block title %}Home Page{% endblock %}
+{% load static %}
+{% block main %}
+<div class="">
+    <section class="md:w-[70%] mx-auto">
+        <!-- Job Search Form -->
+        <form action="{% url 'home-page' %}" method="GET" class="p-2 flex gap-4 items-center">
+            <div class="flex w-full border p-2 border-gray-300 shadow-inner shadow-black rounded-2xl overflow-hidden">
+                
+                <!-- Job Title or Company -->
+                <div class="flex items-center p-1 w-1/2">
+                    <i class="fas fa-briefcase text-gray-400 mr-2"></i>
+                    <input 
+                        type="text" 
+                        name="job" 
+                        id="job" 
+                        value="{{ job_query|default_if_none:'' }}" 
+                        placeholder="Job Title or Company" 
+                        aria-label="Search for a job title or company"
+                        class="border-none outline-none w-full"
+                    />
+                </div>
+        
+                <div class="border-l border-gray-300"></div>
+        
+                <!-- Location -->
+                <div class="flex items-center p-1 w-1/2">
+                    <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+                    <input 
+                        type="text" 
+                        name="location" 
+                        id="location" 
+                        value="{{ location_query|default_if_none:'' }}" 
+                        placeholder="Location" 
+                        aria-label="Search for a job by location"
+                        class="border-none outline-none w-full"
+                    />
+                </div>
+        
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="bg-primary hover:bg-blue-800 text-white font-bold  px-3 md:px-6 rounded-md">
+                    Search
+                </button>
+            </div>
+        </form>
+    </section>    
+
+    <!-- Section for Suggested Job Applications -->
+    <section class="my-7 text-center">
+        <a href="{% url 'resume-view-page' %}" class="text-xs"><span class="font-semibold text-sm text-primary">Post Your CV</span>- it only takes a few seconds</a>
+    </section>
+
+    <!-- Display Jobs -->
+    <section class="md:w-[80%] mx-auto mt-5">
+        <div>
+            <!-- Title -->
+            <h2 class="font-bold text-2xl text-center">Jobs For You</h2>
+
+            <!-- Vertical Divider -->
+            <div class="border-b-2 h-4 border-secondary"></div>
+
+            <!-- Job Listings -->
+            <div class="flex flex-col md:flex-row gap-4 mt-4">
+                <!-- Left Column (Jobs based on search) -->
+                <div class="md:w-2/5 border-r border-secondary px-4 md:pr-4">
+                    <span class=" text-center md:text-start text-sm font-semibold">Jobs based on your search</span>
+
+                    {% for job in jobs %}
+                    <div id="openJobDetailsModal" class="mt-2 p-4 border border-gray-300 rounded-md shadow-md space-y-5">
+                        <a href="javascript:void(0);" class="job-link" data-job-id="{{ job.id }}">
+                            <span class="block font-bold mb-2">{{ job.title }}</span>
+                            <p class="text-gray-600 text-sm">{{ job.company.name }}</p>
+                            <p class="text-gray-600 text-sm">{{ job.location }}</p>
+                            <div class="flex gap-2 mt-2">
+                                <p class="bg-secondary p-2 text-gray-600 text-sm rounded-md">₦{{ job.salary_min }} - ₦{{ job.salary_max }} a month</p>
+                            </div>
+                            <div class="flex gap-2 my-2">
+                                <p class="bg-secondary p-2 text-gray-600 text-sm rounded-md">{{ job.job_type }}</p>
+                            </div>
+                            <p class="text-gray-600 text-sm">{{ job.requirement|truncatewords:20 }}</p>
+                            <p class="text-gray-600 text-sm mt-2">Posted on {{ job.create_date|date:"M d, Y" }}</p>
+                        </a>
+                    </div>
+                    {% empty %}
+                    <p>No jobs found based on your search criteria.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Right Column (Job Details Section for Desktop) -->
+                <div class="md:w-3/5 hidden md:block bg-white rounded-lg shadow-lg h-screen overflow-y-scroll scrollbar-hide sticky top-0" id="jobDetailsContainer">
+                    <div id="jobDetailsDesktop" class="shadow-md sticky top-0 z-50 bg-white">
+                        <div class="flex justify-center items-center h-full">
+                            <p class="text-gray-500">Select a job to view details here.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="jobModal" class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50 hidden">     
+        <!-- Job Details Container -->
+        <div id="jobDetailsMobile" class="shadow-md bg-white overflow-y-scroll scrollbar-hide h-full">
+            <!-- Content -->
+            <div class="flex justify-center items-center h-full pt-16">
+                <p class="text-gray-500">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination flex justify-center items-center mt-6">
+        {% if jobs.has_previous %}
+            <a href="?page=1&job={{ job_query }}&location={{ location_query }}" 
+                class="px-4 py-2 bg-gray-200 text-gray-700 border border-gray-300 rounded-l-md hover:bg-primary hover:text-white">
+                First
+            </a>
+            <a href="?page={{ jobs.previous_page_number }}&job={{ job_query }}&location={{ location_query }}" 
+                class="px-4 py-2 bg-gray-200 text-gray-700 border border-gray-300 hover:bg-primary hover:text-white">
+                Previous
+            </a>
+        {% endif %}
+    
+        <span class="px-4 py-2 bg-gray-100 text-gray-800 border-t border-b border-gray-300 font-semibold">
+            Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
+        </span>
+    
+        {% if jobs.has_next %}
+            <a href="?page={{ jobs.next_page_number }}&job={{ job_query }}&location={{ location_query }}" 
+                class="px-4 py-2 bg-gray-200 text-gray-700 border border-gray-300 hover:bg-primary hover:text-white">
+                Next
+            </a>
+            <a href="?page={{ jobs.paginator.num_pages }}&job={{ job_query }}&location={{ location_query }}" 
+                class="px-4 py-2 bg-gray-200 text-gray-700 border border-gray-300 rounded-r-md hover:bg-primary hover:text-white">
+                Last
+            </a>
+        {% endif %}
+    </div>
+    
+</div>
+
+<script>
+document.querySelectorAll('.job-link').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const jobId = link.getAttribute('data-job-id');
+        const jobModal = document.getElementById('jobModal');
+        const jobDetailsMobile = document.getElementById('jobDetailsMobile');
+        const jobDetailsDesktop = document.getElementById('jobDetailsDesktop');
+
+        // Fetch job details via AJAX
+        fetch(`/fetch-job-details/?job_id=${jobId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Job not found');
+                } else {
+                    const jobDescription = data.description || '';
+                    const jobRequirements = data.requirement || '';
+                    const jobResponsibilities = data.responsibility || '';
+
+                    const jobContent = `
+                        <div class="shadow-md p-5 sticky top-0 z-50 bg-white flex items-center justify-between relative">
+                            <!-- Close Button -->
+                            
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">${data.title}</h3>
+                                <p class="text-gray-500 text-sm mb-2">${data.company}</p>
+                                <p class="text-gray-500 text-sm mb-3">${data.location}</p>
+                                <a href="/job/apply/${jobId}" 
+                                class="bg-primary text-white font-semibold py-1 px-2 rounded-lg text-center hover:bg-blue-700">
+                                Apply Now
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mb-4 p-5 border-b-2">
+                            <h3 class="font-medium mb-2 text-gray-900">Job Details</h3>
+                            <p class="text-gray-600 text-xs mb-4">Here's how you align your profile</p>
+                            <div>
+                                <p class="bg-secondary p-2 text-gray-600 text-sm rounded-md inline">₦ ${data.salary_min} - ₦ ${data.salary_max} a month</p>
+                                <p class="bg-secondary p-2 text-gray-600 text-sm rounded-md inline">${data.job_type}</p>
+                            </div>
+                        </div>
+                        <div class="mb-4 p-4 border-b-2 space-y-3">
+                            <p class="text-xl font-bold mb-2">Full Job Description</p>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Job Description:</h3>
+                                <p class="text-gray-600 text-sm">${jobDescription}</p>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Requirements:</h3>
+                                <ul class="text-sm list-disc list-inside ml-3">
+                                    ${jobRequirements.split('\n').map(req => `<li>${req}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Responsibilities:</h3>
+                                <ul class="text-sm list-disc list-inside ml-3">
+                                    ${jobResponsibilities.split('\n').map(resp => `<li>${resp}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+
+                    // Display content based on viewport
+                    if (window.innerWidth < 768) {
+                        // Mobile View
+                        jobDetailsMobile.innerHTML = jobContent;
+                        jobModal.classList.remove('hidden');
+                        jobModal.classList.add('flex');
+
+                        // Add event listener for dynamically added close button
+                        document.getElementById('closeModal').addEventListener('click', function () {
+                            jobModal.classList.add('hidden');
+                            jobModal.classList.remove('flex');
+                        });
+                    } else {
+                        // Desktop View
+                        jobDetailsDesktop.innerHTML = jobContent;
+                    }
+                }
+            })
+            .catch(error => {
+                alert('Error fetching job details');
+            });
+    });
+});
+
+document.getElementById('closeModal').addEventListener('click', function () {
+    jobModal.classList.add('hidden');
+    jobModal.classList.remove('flex');
+});
+
+
+</script>
+
+{% endblock %}
+

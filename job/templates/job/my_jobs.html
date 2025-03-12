@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Your Job Listings{% endblock %}
+
+{% block main %}
+<h1 class="text-2xl font-bold mb-4">Your Job Listings</h1>
+
+<div class="overflow-x-auto">
+    {% if my_jobs %}
+        <table class="min-w-full border-collapse text-sm sm:text-base">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="border-b py-2 px-4 text-left">Title</th>
+                    <th class="border-b py-2 px-4 text-left">Company</th>
+                    <th class="border-b py-2 px-4 text-left">Posted On</th>
+                    <th class="border-b py-2 px-4 text-left">Availability</th>
+                    <th class="border-b py-2 px-4 text-left">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in my_jobs %}
+                <tr class="hover:bg-gray-100">
+                    <td class="border-b py-2 px-4">{{ job.title }}</td>
+                    <td class="border-b py-2 px-4">{{ job.company.name }}</td>
+                    <td class="border-b py-2 px-4">{{ job.create_date|date:"M d, Y" }}</td>
+                    <td class="border-b py-2 px-4">
+                        {% if job.is_available %}
+                            <span class="text-green-600 font-bold">Available</span>
+                        {% else %}
+                            <span class="text-red-600 font-bold">Unavailable</span>
+                        {% endif %}
+                    </td>
+                    <td class="border-b py-2 px-4 space-x-2">
+                        <a href="{% url 'job_detail' job.pk %}" class="text-blue-600 hover:underline">View</a>
+                        <a href="{% url 'update_job' job.pk %}" class="text-yellow-600 hover:underline">Edit</a>
+                        <a href="{% url 'delete_job' job.pk %}" class="text-red-600 hover:underline"
+                           onclick="return confirm('Are you sure you want to delete this job?');">Delete</a>
+                        {% if job.is_available %}
+                            <a href="{% url 'toggle-job-status' job.pk %}" class="text-gray-600 hover:underline">Close</a>
+                        {% else %}
+                            <a href="{% url 'toggle-job-status' job.pk %}" class="text-green-600 hover:underline">Reopen</a>
+                        {% endif %}
+                        <a href="{% url 'view-applications' job.pk %}" class="text-primary hover:underline">
+                            Manage App
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No jobs found.</p>
+    {% endif %}
+</div>
+{% endblock %}

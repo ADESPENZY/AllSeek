@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="bg-gray-50 p-8 rounded-lg shadow-lg max-w-4xl mx-auto mt-10">
+    <!-- Company Logo -->
+    {% if company.logo %}
+        <div class="flex justify-center mb-6">
+            <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="w-40 h-40 object-cover rounded-full shadow-md">
+        </div>
+    {% endif %}
+
+    <!-- Company Name -->
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">{{ company.name }}</h1>
+
+    <!-- Basic Info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <p class="text-lg"><strong class="text-gray-700">Industry:</strong> {{ company.industry }}</p>
+        <p class="text-lg"><strong class="text-gray-700">Country:</strong> {{ company.country }}</p>
+        <p class="text-lg"><strong class="text-gray-700">Address:</strong> {{ company.address }}</p>
+        <p class="text-lg"><strong class="text-gray-700">Founded:</strong> {{ company.founded_date|date:"F d, Y" }}</p>
+        <p class="text-lg"><strong class="text-gray-700">Size:</strong> {{ company.size }}</p>
+    </div>
+
+    <!-- Mission, Vision, and About -->
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">About the Company</h2>
+        <p class="text-gray-700 mb-4"><strong>Mission:</strong> {{ company.mission }}</p>
+        <p class="text-gray-700 mb-4"><strong>Vision:</strong> {{ company.vision }}</p>
+        <p class="text-gray-700"><strong>Overview:</strong> {{ company.about }}</p>
+    </div>
+
+    <!-- Recruitment Info -->
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Recruitment Information</h2>
+        <p class="text-gray-700 mb-2"><strong>Recruitment Policy:</strong> {{ company.recruitment_policy }}</p>
+        <p class="text-gray-700"><strong>Verified:</strong> {{ company.is_verified|yesno:"Yes,No" }}</p>
+        <p class="text-gray-700"><strong>Can Recruit:</strong> {{ company.can_recruit|yesno:"Yes,No" }}</p>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Connect with Us</h2>
+        <ul class="flex space-x-4 text-blue-600">
+            {% if company.facebook_link %}
+                <li><a href="{{ company.facebook_link }}" target="_blank" class="hover:underline">Facebook</a></li>
+            {% endif %}
+            {% if company.twitter_link %}
+                <li><a href="{{ company.twitter_link }}" target="_blank" class="hover:underline">Twitter</a></li>
+            {% endif %}
+            {% if company.linkedin_link %}
+                <li><a href="{{ company.linkedin_link }}" target="_blank" class="hover:underline">LinkedIn</a></li>
+            {% endif %}
+            {% if company.instagram_link %}
+                <li><a href="{{ company.instagram_link }}" target="_blank" class="hover:underline">Instagram</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Edit Button -->
+    <div class="mt-10 text-center">
+        <a href="{% url 'update-company' company.id %}" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-600">
+            Edit Company
+        </a>
+    </div>
+</div>
+{% endblock %}
