@@ -136,16 +136,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+
+# Collects all static files from apps
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Adjust path according to your structure
+    BASE_DIR / "static",
+    BASE_DIR / "theme/static",  # Add Tailwind output directory
 ]
+
+# Destination folder for collected static files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Ensures proper static file serving with WhiteNoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
+# Media files (User-uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
